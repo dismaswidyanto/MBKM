@@ -1,12 +1,12 @@
 from isDemon import isDemon
-def Routing(Q_table, demon_table):
+def Routing(Q_table, demon_table, start, goal):
 	print("Route")
-	s = 1
+	s = start
 	for i in range(25):
 		if(isDemon(demon_table,s-1)):
 			print("error")
 			break
-		if (s == 25):
+		if (s == goal):
 			print("S",s," Goal!\n")
 			break
 		

@@ -1,7 +1,7 @@
 from isDemon import isDemon
-def update_Qvalue(state, new_state, Q_table, act, alpha, gamma, t, demon_table):
+def update_Qvalue(state, new_state, Q_table, act, alpha, gamma, t, demon_table, goal):
 	
-	if (new_state == 24):
+	if (new_state == goal-1):
 		reward = 100
 	elif (t == 15):
 		reward = -50
