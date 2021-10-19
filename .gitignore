@@ -1,1 +1,7 @@
+#compressed
 *.rar
+*.zip
+
+#doument
+*.docx
+*.doc
