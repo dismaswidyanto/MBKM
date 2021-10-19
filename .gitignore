@@ -8,3 +8,6 @@
 
 #python cache
 *.pyc
+
+#matlab code
+*.m
