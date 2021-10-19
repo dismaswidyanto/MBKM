@@ -5,3 +5,6 @@
 #doument
 *.docx
 *.doc
+
+#python cache
+*.pyc
