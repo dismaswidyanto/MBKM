@@ -1,10 +1,13 @@
+#call library
 import random
 from Search_Location import Search_Location
 
 # action
 def Action(maze, Q_table, epsilon):
+	#variable
 	global act
 	out = 0;
+	
 	while (out == 0):
 		(state,state_i,state_j) = Search_Location(maze)
 		#print(state,state_i,state_j)

@@ -1,3 +1,4 @@
+#call library
 from print_Qtable import print_Qtable
 from Routing import Routing
 from Action import Action
@@ -5,29 +6,36 @@ from Search_Location import Search_Location
 from update_Qvalue import update_Qvalue
 import random
 
+#parameter
 alpha = 0.5
 gamma = 0.9
 demon = 8
 
-demon_table = [[0 for i in range(5)] for j in range(5)]
+# #generate demon table
+# demon_table = [[0 for i in range(5)] for j in range(5)]
 
-start = int(input("Masukkan posisi start: "))
-goal = int(input("Masukkan posisi goal: "))
+# #input start and goal
+# start = int(input("Masukkan posisi start: "))
+# goal = int(input("Masukkan posisi goal: "))
 
-demon_table[(start-1)//5][start%5 - 1] = "S"
-demon_table[(goal-1)//5][goal%5 - 1] = "G"
+# #mark start and goal position
+# demon_table[(start-1)//5][start%5 - 1] = "S"
+# demon_table[(goal-1)//5][goal%5 - 1] = "G"
 
-i=0
-while (i<demon):
-	pos = random.randint(1,25)
-	if((demon_table[(pos-1)//5][pos%5 - 1]!=1) and not((pos==start) or (pos==goal))):
-		demon_table[(pos-1)//5][pos%5 - 1]=1
-		i+=1
-	
-print("Demon Table: ")
-for i in range (5):
-	print(demon_table[i])
+# #mark demon position
+# i=0
+# while (i<demon):
+	# pos = random.randint(1,25)
+	# if((demon_table[(pos-1)//5][pos%5 - 1]!=1) and not((pos==start) or (pos==goal))):
+		# demon_table[(pos-1)//5][pos%5 - 1]=1
+		# i+=1
 
+# #print demon table
+# print("Demon Table: ")
+# for i in range (5):
+	# print(demon_table[i])
+
+#generate Q_table
 Q_table = [[0 for i in range(4)] for j in range (25)]
 
 print("Q-Table and route before learning")
