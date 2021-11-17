@@ -3,13 +3,13 @@ import random
 from Search_Location import Search_Location
 
 # action
-def Action(maze, Q_table, epsilon):
+def Action(maze, Q_table, epsilon, SIZE):
 	#variable
 	global act
 	out = 0;
 	
 	while (out == 0):
-		(state,state_i,state_j) = Search_Location(maze)
+		(state,state_i,state_j) = Search_Location(maze, SIZE)
 		#print(state,state_i,state_j)
 		
 		randomnum = random.random();
@@ -44,14 +44,14 @@ def Action(maze, Q_table, epsilon):
 			out = 0
 		elif (state_j == -1):
 			out = 0
-		elif (state_i == 5):
+		elif (state_i == SIZE):
 			out = 0
-		elif (state_j == 5):
+		elif (state_j == SIZE):
 			out = 0
 		else:
 			out = out + 1
 	
-	new_maze = [[0 for i in range(5)] for j in range(5)]
+	new_maze = [[0 for i in range(SIZE)] for j in range(SIZE)]
 	new_maze[state_i][state_j] = 1
 	
 	return (act, new_maze)

@@ -1,6 +1,6 @@
-def print_Qtable(Q_table):
+def print_Qtable(Q_table, SIZE):
 	print("State \t Right \t Up \t Left \t Down")
-	for i in range(25):
+	for i in range(SIZE*SIZE):
 		print(i+1, end="\t")
 		for j in range (4):
 			if(j!=4-1):
