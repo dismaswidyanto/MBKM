@@ -19,16 +19,18 @@ def get_state(kondisi):
 #update_kondisi: update traffic condition based on action
 def update_kondisi(green, kondisi):
 	new_kondisi = kondisi[:]
+
 	for i in range(4):
 		if(i == green):
 			new_kondisi[i] -= 1
-			if(kondisi[i] <= 0):
+			if(new_kondisi[i] <= 0):
 				new_kondisi[i] = 0
 		else:
 			new_kondisi[i] += 1
-			if(kondisi[i] >= 1):
+			if(new_kondisi[i] >= 1):
 				new_kondisi[i] = 1
 	
+
 	return new_kondisi
 
 #action: choose action based on condition and q-table
@@ -51,9 +53,7 @@ def action(epsilon, state, kondisi, q_table):
 		else:
 			green = 3 #lane west
 	
-	new_kondisi = [0 for i in range(4)]
-	# new_kondisi = kondisi
-	new_kondisi = update_kondisi(green, new_kondisi)
+	new_kondisi = update_kondisi(green, kondisi)
 	
 	return new_kondisi, green
 
@@ -61,27 +61,7 @@ def action(epsilon, state, kondisi, q_table):
 def update_qvalue(green, state, kondisi, new_state, new_kondisi, q_table, alpha, gamma):
 	#derajat 1 diberi hijau
 	if(kondisi[green] == 1):
-		reward = 100
-		
-	#derajat 0 diberi merah
-	elif(kondisi[0] == 0 and green != 0):
-		reward = 50
-	elif(kondisi[1] == 0 and green != 1):
-		reward = 50
-	elif(kondisi[2] == 0 and green != 2):
-		reward = 50
-	elif(kondisi[3] == 0 and green != 3):
-		reward = 50
-		
-	#derajat 1 diberi merah
-	elif(kondisi[0] == 1 and green != 0):
-		reward = -50
-	elif(kondisi[1] == 1 and green != 1):
-		reward = -50
-	elif(kondisi[2] == 1 and green != 2):
-		reward = -50
-	elif(kondisi[3] == 1 and green != 3):
-		reward = -50
+		reward = 15
 		
 	#derajat 0 diberi hijau
 	elif(kondisi[green] == 0):
@@ -111,7 +91,7 @@ for episode in range(300):
 	
 	epsilon = 1 - ((episode+1) / 301)
 	
-	for t in range(200):
+	for t in range(20):
 		#print(kondisi)
 		state =  get_state(kondisi)
 		#print(state)
@@ -131,7 +111,7 @@ for episode in range(300):
 		#break
 		#print_qtable(q_table)
 		#break
-	break
+	#break
 print_qtable(q_table)
 
 # #test
