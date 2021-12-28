@@ -3,12 +3,12 @@ import random
 
 #print_qtable: print q_table
 def print_qtable(Q_table):
-	print("State \t North \t East \t South \t West")
+	print("State \t\t North \t\t East \t\t South \t\t West")
 	for i in range(81):
-		print(i+1, end="\t")
+		print(i+1, end="\t\t")
 		for j in range (4):
 			if(j!=4-1):
-				print(format(Q_table[i][j],'.5f'), end="\t");
+				print(format(Q_table[i][j],'.5f'), end="\t\t");
 			else:
 				print(format(Q_table[i][j],'.5f'))
 
@@ -45,7 +45,7 @@ def action(epsilon, state, kondisi, q_table):
 		if(number <= 0.25):
 			green = 0 #lane north
 		elif(number <= 0.5):
-			green  = 1 #lane east
+			green = 1 #lane east
 		elif(number <= 0.75):
 			green = 2 #lane south
 		else:
@@ -59,11 +59,11 @@ def action(epsilon, state, kondisi, q_table):
 def update_qvalue(green, state, kondisi, new_state, new_kondisi, q_table, alpha, gamma):
 	#derajat 2 diberi hijau
 	if(kondisi[green] == 2):
-		reward = 100
+		reward = 50
 		
 	#derajat 1 diberi hijau
 	elif(kondisi[green] == 1):
-		reward = 50
+		reward = 0
 	
 	#derajat 0 diberi hijau
 	elif(kondisi[green] == 0):
@@ -73,6 +73,7 @@ def update_qvalue(green, state, kondisi, new_state, new_kondisi, q_table, alpha,
 		reward = 0
 	
 	#print(reward)
+	#update q-value (bakal di PL)
 	q_table[state][green] = (1 - alpha) * q_table[state][green] + alpha * (reward +  gamma * max(q_table[new_state]))
 	
 	return q_table
@@ -80,18 +81,18 @@ def update_qvalue(green, state, kondisi, new_state, new_kondisi, q_table, alpha,
 #parameter
 alpha = 0.5
 gamma = 0.9
-
+#rst = 0
 
 #make q-table
 q_table = [[random.random() for i in range(4)] for j in range(81)]
 print_qtable(q_table)
 
 
-for episode in range(200):
+for episode in range(5000):
 	kondisi = [random.randrange(0,3,1) for i in range(4)]
 	#print(kondisi)
 	
-	epsilon = 1 - ((episode+1) / 201)
+	epsilon = 1 - ((episode+1) / 5001)
 	
 	for t in range(20):
 		#print(kondisi)
@@ -115,7 +116,18 @@ for episode in range(200):
 		#break
 	#break
 print_qtable(q_table)
+for i in range (0,81):
 
+	if q_table[i][0] > q_table[i][1] and q_table[i][0] > q_table[i][2] and q_table[i][0] > q_table[i][3]:
+		green_1=1
+	elif  q_table[i][1] > q_table[i][0] and q_table[i][1] > q_table[i][2] and q_table[i][1] > q_table[i][3]:
+		green_1=2
+	elif q_table[i][2] > q_table[i][1] and q_table[i][2] > q_table[i][0] and q_table[i][0] > q_table[i][3]:
+		green_1=3
+	elif q_table[i][3] > q_table[i][1] and q_table[i][3] > q_table[i][2] and q_table[i][3] > q_table[i][0]:
+		green_1=4
+	#print (i,j)
+	print (i+1,green_1)
 # #test
 # kondisi = [0,1,0,1]
 # print(kondisi)

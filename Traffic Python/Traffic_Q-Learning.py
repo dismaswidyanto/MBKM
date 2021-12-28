@@ -17,24 +17,27 @@ def get_state(kondisi):
 	return kondisi[0]*pow(2,3) + kondisi[1]*pow(2,2) + kondisi[2]*pow(2,1) + kondisi[3]*pow(2,0)
 	
 #update_kondisi: update traffic condition based on action
-def update_kondisi(green, kondisi):
+def update_kondisi(green, kondisi, red_count):
 	new_kondisi = kondisi[:]
+	new_red_count = red_count[:]
 
 	for i in range(4):
 		if(i == green):
 			new_kondisi[i] -= 1
+			new_red_count [i] = 0
 			if(new_kondisi[i] <= 0):
 				new_kondisi[i] = 0
 		else:
 			new_kondisi[i] += 1
+			new_red_count [i] += 1
 			if(new_kondisi[i] >= 1):
 				new_kondisi[i] = 1
 	
 
-	return new_kondisi
+	return new_kondisi, new_red_count
 
 #action: choose action based on condition and q-table
-def action(epsilon, state, kondisi, q_table):
+def action(epsilon, state, kondisi, red_count, q_table):
 	
 	randomnum = random.random();
 	if(epsilon <= randomnum):
@@ -53,15 +56,18 @@ def action(epsilon, state, kondisi, q_table):
 		else:
 			green = 3 #lane west
 	
-	new_kondisi = update_kondisi(green, kondisi)
+	[new_kondisi, new_red_count] = update_kondisi(green, kondisi, red_count)
 	
 	return new_kondisi, green
 
 #update_qvalue: update q-value in q-table based on action and reward
-def update_qvalue(green, state, kondisi, new_state, new_kondisi, q_table, alpha, gamma):
+def update_qvalue(green, state, kondisi, new_state, new_kondisi, red_count, q_table, alpha, gamma):
 	#derajat 1 diberi hijau
-	if(kondisi[green] == 1):
-		reward = 15
+	if(kondisi[green] == 1 and red_count[green] == 3):
+		reward = 100
+	
+	elif(kondisi[green] == 1 and red_count[green] < 3):
+		reward = 50
 		
 	#derajat 0 diberi hijau
 	elif(kondisi[green] == 0):
@@ -87,16 +93,17 @@ print_qtable(q_table)
 
 for episode in range(300):
 	kondisi = [random.randrange(0,2,1) for i in range(4)]
+	red_count = [0 for i in range(4)]
 	#print(kondisi)
 	
 	epsilon = 1 - ((episode+1) / 301)
 	
-	for t in range(20):
+	for t in range(200):
 		#print(kondisi)
 		state =  get_state(kondisi)
 		#print(state)
 		
-		[new_kondisi, green_light] = action(epsilon, state, kondisi, q_table)
+		[new_kondisi, green_light] = action(epsilon, state, kondisi, red_count, q_table)
 		#print(kondisi)
 		#print(new_kondisi)
 		#print(green_light)
@@ -104,7 +111,7 @@ for episode in range(300):
 		new_state = get_state(new_kondisi)
 		#print(new_state)
 		
-		q_table = update_qvalue(green_light, state, kondisi, new_state, new_kondisi, q_table, alpha, gamma)
+		q_table = update_qvalue(green_light, state, kondisi, new_state, new_kondisi, red_count, q_table, alpha, gamma)
 		
 		kondisi = new_kondisi
 		#print(kondisi, "\n")
@@ -113,6 +120,7 @@ for episode in range(300):
 		#break
 	#break
 print_qtable(q_table)
+print(q_table)
 
 # #test
 # kondisi = [0,1,0,1]
